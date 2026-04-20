@@ -115,6 +115,8 @@ curl http://localhost:3000/health
 
 Verkenningsvraag: wat ontbreekt er qua DevOps?
 
+<span style="color:red">Test bestanden worden niet automatisch gedraaid</span>
+
 ### Opdracht 2: GitHub Flow in de praktijk
 
 ```bash
