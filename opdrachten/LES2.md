@@ -162,6 +162,7 @@ Maak een Dockerfile in de root van je dotNOVI-project.
 #    node_modules, .git, *.md, .env
 
 # 3. Controleer je Dockerfile
+
 cat Dockerfile
 ```
 

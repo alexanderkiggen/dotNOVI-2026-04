@@ -49,7 +49,7 @@ Docker Compose is een tool voor het definiëren en runnen van multi-container Do
 Herschrijf je Dockerfile als multi-stage build en vergelijk het resultaat.
 
 ```bash
-# 1. Maak Dockerfile.multistage met twee stages:
+# 1. Maak Dockerfile met twee stages:
 #    Stage 1 (builder): npm ci met alle dependencies
 #    Stage 2 (production): kopieer alleen wat nodig is
 
@@ -57,7 +57,7 @@ Herschrijf je Dockerfile als multi-stage build en vergelijk het resultaat.
 docker build -t dotnovi:single -f Dockerfile .
 
 # 3. Build multi-stage
-docker build -t dotnovi:multi -f Dockerfile.multistage .
+docker build -t dotnovi:multi -f Dockerfile .
 
 # 4. Vergelijk image sizes
 docker images | grep dotnovi
