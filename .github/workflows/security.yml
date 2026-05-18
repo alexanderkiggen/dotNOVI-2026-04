@@ -1,0 +1,22 @@
+name: Security Scan
+
+on:
+  schedule:
+    - cron: '0 2 * * *'  # Elke nacht om 02:00 UTC
+
+  workflow_dispatch:
+
+jobs:
+  scan:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Code ophalen uit GitHub
+        uses: actions/checkout@v4
+
+      - name: Node.js installeren
+        uses: actions/setup-node@v4
+        with:
+          node-version: 'lts/*'
+
+      - name: Run NPM audit scan
+        run: npm audit --audit-level=moderate
