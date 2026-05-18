@@ -25,20 +25,24 @@ jobs:
       - name: Linter uitvoeren
         run: npm run lint --if-present
 
-  test:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Code ophalen uit GitHub
-        uses: actions/checkout@v4
+test:
+  runs-on: ubuntu-latest
+  strategy:
+    matrix:
+      node-version: [18, 20, 24]
 
-      - name: Node.js installeren
-        uses: actions/setup-node@v4
-        with:
-          node-version: '20'
-          cache: 'npm'
+  steps:
+    - name: Code ophalen uit GitHub
+      uses: actions/checkout@v4
 
-      - name: Dependencies installeren
-        run: npm ci
+    - name: Node.js installeren (${{ matrix.node-version }})
+      uses: actions/setup-node@v4
+      with:
+        node-version: ${{ matrix.node-version }}
+        cache: 'npm'
 
-      - name: Tests uitvoeren
-        run: npm test
+    - name: Dependencies installeren
+      run: npm ci
+
+    - name: Tests uitvoeren
+      run: npm test
