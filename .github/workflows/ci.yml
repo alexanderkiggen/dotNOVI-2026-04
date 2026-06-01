@@ -85,5 +85,5 @@ jobs:
           context: .
           push: true
           tags: |
-            ghcr.io/${{ github.repository }}:v${{ steps.version.outputs.version }}
-            ghcr.io/${{ github.repository }}:latest
+            ghcr.io/alexanderkiggen/dotnovi-2026-04:v${{ steps.version.outputs.version }}
+            ghcr.io/alexanderkiggen/dotnovi-2026-04:latest
