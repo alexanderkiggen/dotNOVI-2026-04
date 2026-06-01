@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
     inputs:
       environment:
-        description: 'Deploy environment'
+        description: 'Deploy environment!'
         default: 'production'
 
 jobs:
