@@ -1,0 +1,29 @@
+name: Deploy to Production
+
+on:
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: 'Deploy environment'
+        default: 'production'
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Trigger Render deploy
+        run: |
+          curl -X POST "${{ secrets.RENDER_DEPLOY_HOOK }}"
+
+      - name: Wait for deployment
+        run: sleep 45
+
+      - name: Smoke test
+        run: |
+          # VERVANG DE URL HIERONDER DOOR JOUW ECHTE RENDER URL!
+          STATUS=$(curl -s -o /dev/null -w "%{http_code}" https://JOUW-APP-NAAM.onrender.com/health)
+          if [ "$STATUS" != "200" ]; then
+            echo "Health check failed with status $STATUS"
+            exit 1
+          fi
+          echo "Deploy successful!"
