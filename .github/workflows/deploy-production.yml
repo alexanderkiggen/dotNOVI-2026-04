@@ -16,11 +16,11 @@ jobs:
           curl -X POST "${{ secrets.RENDER_DEPLOY_HOOK }}"
 
       - name: Wait for deployment
-        run: sleep 45
+        run: sleep 150
 
       - name: Smoke test
         run: |
-          STATUS=$(curl -s -o /dev/null -w "%{http_code}" https://dotnovi-alexander.onrender.com/health
+          STATUS=$(curl -s -o /dev/null -w "%{http_code}" https://dotnovi-alexander.onrender.com/health)
           if [ "$STATUS" != "200" ]; then
             echo "Health check failed with status $STATUS"
             exit 1
