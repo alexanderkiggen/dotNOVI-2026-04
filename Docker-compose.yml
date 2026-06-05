@@ -1,0 +1,23 @@
+services:
+  app:
+    build: .
+    ports:
+      - "3005:3000"
+    environment:
+      - DATABASE_URL=postgresql://dotnovi:devops123@postgres:5432/dotnovi
+    depends_on:
+      - postgres
+
+  postgres:
+    image: postgres:16-alpine
+    environment:
+      - POSTGRES_USER=dotnovi
+      - POSTGRES_PASSWORD=devops123
+      - POSTGRES_DB=dotnovi
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+volumes:
+  postgres_data:
