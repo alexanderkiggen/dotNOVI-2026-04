@@ -15,14 +15,24 @@ jobs:
         run: |
           curl -X POST "${{ secrets.RENDER_DEPLOY_HOOK }}"
 
-      - name: Wait for deployment
-        run: sleep 150
-
-      - name: Smoke test
+      - name: Wait for deployment and Smoke test
         run: |
-          STATUS=$(curl -s -o /dev/null -w "%{http_code}" https://dotnovi-alexander.onrender.com/health
-          if [ "$STATUS" != "200" ]; then
-            echo "Health check failed with status $STATUS"
-            exit 1
-          fi
-          echo "Deploy successful!"
+          echo "Wachten tot de applicatie live is op Render..."
+          MAX_RETRIES=30
+          RETRY_INTERVAL=10
+          URL="https://dotnovi-alexander.onrender.com/health"
+
+          for ((i=1; i<=MAX_RETRIES; i++)); do
+            STATUS=$(curl -s -o /dev/null -w "%{http_code}" $URL)
+          
+            if [ "$STATUS" == "200" ]; then
+              echo "✅ Deploy succesvol! Health check gaf status 200."
+              exit 0
+            fi
+          
+            echo "⏳ Poging $i/$MAX_RETRIES: Status is $STATUS. Nog niet klaar, we wachten ${RETRY_INTERVAL} seconden..."
+            sleep $RETRY_INTERVAL
+          done
+
+          echo "❌ Health check is gefaald na 5 minuten. Check je Render logs!"
+          exit 1
