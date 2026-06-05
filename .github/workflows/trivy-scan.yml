@@ -1,0 +1,29 @@
+name: Security Scan (Trivy)
+
+on:
+  push:
+    branches: [ 'main', 'feature/**' ]
+  pull_request:
+    branches: [ main ]
+  schedule:
+    - cron: '0 2 * * *'  # Draait automatisch elke nacht om 02:00 uur
+
+jobs:
+  trivy-security:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Code ophalen uit GitHub
+        uses: actions/checkout@v4
+
+      - name: Bouw tijdelijke Docker image voor de scan
+        run: docker build -t dotnovi-scan-image:${{ github.sha }} .
+
+      - name: Trivy Vulnerability Scanner uitvoeren
+        uses: aquasecurity/trivy-action@master
+        with:
+          image-ref: 'dotnovi-scan-image:${{ github.sha }}'
+          format: 'table'
+          exit-code: '0'
+          ignore-unfixed: true
+          vuln-type: 'os,library'
+          severity: 'CRITICAL,HIGH'
